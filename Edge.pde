@@ -9,9 +9,9 @@ class Edge{
     }
 
     void draw(){
-        println(" x1 :"+ v0.vertex.x + " y1 :" +
+        /* println(" x1 :"+ v0.vertex.x + " y1 :" +
         v0.vertex.y +  "z1 :" + v0.vertex.z + " x2 :"+ v1.vertex.x+" y2 :"+
-         v1.vertex.y+" z2 :"+ v1.vertex.z);
+         v1.vertex.y+" z2 :"+ v1.vertex.z); */
         stroke(255);
         line(v0.vertex.x,v0.vertex.y,v0.vertex.z , v1.vertex.x, v1.vertex.y, v1.vertex.z);
     }
@@ -26,11 +26,20 @@ class Edge{
 class Vertex{
 
     PVector vertex;
+    float isoValue = 0;
 
     Vertex(float i, float j, float k, float s){
         
         vertex = new PVector(i*s, j*s, k*s);
 
+    }
+
+    void setIsovalue(float isoValue){
+        this.isoValue = isoValue;
+    }
+
+    float getIsovalue(){
+        return isoValue;
     }
 
 }

@@ -2,7 +2,7 @@ class Voxel{
 
     Vertex[] voxelVertex;
     Edge[] voxelEdges;
-    //int cubeIndex = 1;
+    int cubeIndex = 0;
 
     Voxel(PVector position, int scale){
 
@@ -10,7 +10,6 @@ class Voxel{
         voxelEdges = new Edge[12];
         createVertex(position.x, position.y, position.z, scale);
         createEdges();
-
 
     }
 
@@ -49,7 +48,7 @@ class Voxel{
     
     void drawEdges(){
         for(int i = 0; i < 12; i++){
-            print("edge" + i + " is --- ");
+            /* print("edge" + i + " is --- "); */
             voxelEdges[i].draw();
         }
     }
@@ -70,6 +69,19 @@ class Voxel{
 
         }
     
+    }
+
+    int calculateCubeIndex(float isolevel){
+        int cubeindex = 0;
+        if (voxelVertex[0].getIsovalue() < isolevel) cubeindex |= 1;
+        if (voxelVertex[1].getIsovalue() < isolevel) cubeindex |= 2;
+        if (voxelVertex[2].getIsovalue() < isolevel) cubeindex |= 4;
+        if (voxelVertex[3].getIsovalue() < isolevel) cubeindex |= 8;
+        if (voxelVertex[4].getIsovalue() < isolevel) cubeindex |= 16;
+        if (voxelVertex[5].getIsovalue() < isolevel) cubeindex |= 32;
+        if (voxelVertex[6].getIsovalue() < isolevel) cubeindex |= 64;
+        if (voxelVertex[7].getIsovalue() < isolevel) cubeindex |= 128;
+        return cubeindex;
     }
 
 
