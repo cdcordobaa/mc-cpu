@@ -2,102 +2,79 @@ import peasy.*;
 PeasyCam cam;
 //peasy
 
-int voxelResolution = 15;
-int gridScale = 10;
 
-
-
+float size = 20;
+float	axisMin = -10;
+float axisMax =  10;
+float axisRange = axisMax - axisMin;
+float scale = 5;
 void setup(){
   size(1200, 600, P3D);
-  //peasy vars
+
+  //peasy 
   cam = new PeasyCam(this, 100);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(500);
-  //peasy vars
-  
-  noStroke();
+  //peasy 
 
 }
 
 void draw(){
+
   background(125);
-  fill(255,0,0);
+  fill(0,255,0);
   stroke(255);
+
+  float x;
+  float y;
+  float z;
   
-  pushMatrix();  
-  //box(30);
-  drawGrid();
-  //drawVoxel(0,0,0,gridScale);
-  //voxel(0,0,0,gridScale);
+  float delta = axisRange/(size-1);
 
-  popMatrix();
-  
- 
-}
+  for(int i=0; i< size; i++){
+    for(int j=0; j< size; j++){
+      for(int k=0; k< size; k++){
+        x = ((delta*i)+axisMin)*scale;
+        y = ((delta*j)+axisMin)*scale;
+        z = ((delta*k)+axisMin)*scale;
 
-void voxel(int i, int j, int k, int s){
+        drawVoxel(x,y,z, delta*scale);
 
-  Voxel vox = new Voxel(new PVector(i, j, k), s);
-  //vox.drawVertex();
-  //vox.drawEdges();
-  calculateIsoLevel(vox);
-  int cubeindex = vox.calculateCubeIndex(100);
-  // println("cube: "+ cubeindex);
-  vox.renderCase(cubeindex);
-
-}
-
-void drawGrid(){
-
-  for(int i=0; i< voxelResolution; i++){
-    for(int j=0; j< voxelResolution; j++){
-      for(int k=0; k< voxelResolution; k++){
-      //drawVoxel(i,j,k, gridScale);
-      voxel(i,j,k,gridScale);
+        //println("delta "+ i + " is " + x);
       }
     }
   }
+
+  
+  pushMatrix();  
+  
+  //drawGrid();
+  
+  //voxel(delta,0,0,gridScale);
+
+  popMatrix();
 }
 
-void drawVoxel(int i, int j, int k, int s){
-  textSize(10);
-  text("v0", i*s, j*s, k*s);
-  text("v1", (i+1)*s, j*s, k*s);
-  text("v2", (i+1)*s, (j+1)*s, k*s);
-  text("v3", i*s, (j+1)*s, k*s);
+void drawVoxel(float i, float j, float k, float s){
 
-  text("v4", i*s, j*s, (k+1)*s);
-  text("v5", (i+1)*s, j*s, (k+1)*s); 
-  text("v6", (i+1)*s, (j+1)*s, (k+1)*s);
-  text("v7", i*s, (j+1)*s, (k+1)*s);
 
   
   
-  line(i*s,j*s,k*s, i*s,j*s,(k+1)*s);
-  line(i*s,j*s,k*s, i*s,(j+1)*s,k*s);
-  line(i*s,j*s,k*s, (i+1)*s,j*s,k*s);
+  line(i,j,k, i,j,(k+s));
+  line(i,j,k, i,(j+s),k);
+  line(i,j,k, (i+s),j,k);
   
-  line((i+1)*s,j*s,k*s, (i+1)*s,j*s,(k+1)*s);
-  line((i+1)*s,j*s,k*s, (i+1)*s,(j+1)*s,k*s);
+  line((i+s),j,k, (i+s),j,(k+s));
+  line((i+s),j,k, (i+s),(j+s),k);
   
-  line(i*s,(j+1)*s,k*s, i*s,(j+1)*s,(k+1)*s);
-  line(i*s,(j+1)*s,k*s, (i+1)*s,(j+1)*s,k*s);
+  line(i,(j+s),k, i,(j+s),(k+s));
+  line(i,(j+s),k, (i+s),(j+s),k);
   
-  line(i*s,j*s,(k+1)*s, i*s,(j+1)*s,(k+1)*s);
-  line(i*s,j*s,(k+1)*s, (i+1)*s,j*s,(k+1)*s);
+  line(i,j,(k+s), i,(j+s),(k+s));
+  line(i,j,(k+s), (i+s),j,(k+s));
    
-  line((i+1)*s,(j+1)*s,k*s, (i+1)*s,(j+1)*s,(k+1)*s);
-  line(i*s,(j+1)*s,(k+1)*s, (i+1)*s,(j+1)*s,(k+1)*s);
-  line((i+1)*s,j*s,(k+1)*s, (i+1)*s,(j+1)*s,(k+1)*s);
+  line((i+s),(j+s),k, (i+s),(j+s),(k+s));
+  line(i,(j+s),(k+s), (i+s),(j+s),(k+s));
+  line((i+s),j,(k+s), (i+s),(j+s),(k+s));
   
-}
-
-void calculateIsoLevel(Voxel vox){
-  for (Vertex v: vox.voxelVertex){
-    v.isoValue = isoFunction(v.vertex);
-  }  
-}
-
-float isoFunction(PVector vert){
-  return sqrt( pow(vert.x-15, 2) + pow(vert.y-15, 2) + pow(vert.z-15, 2) );
 }

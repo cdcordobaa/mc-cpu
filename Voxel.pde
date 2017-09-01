@@ -35,10 +35,11 @@ class Voxel{
         voxelVertex[4] = new Vertex(i  , j  , k+1, s);
         voxelVertex[5] = new Vertex(i+1, j  , k+1, s);
         voxelVertex[6] = new Vertex(i+1, j+1, k+1, s);
-        voxelVertex[7] = new Vertex(i  , j+1, k+1, s);     
+        voxelVertex[7] = new Vertex(i  , j+1, k+1, s);
     }
 
     void drawVertex(){
+        textSize(15);
         for(int i = 0; i < 8 ; i++){
             text("v"+i, voxelVertex[i].vertex.x,
                         voxelVertex[i].vertex.y,
@@ -47,8 +48,7 @@ class Voxel{
     }
     
     void drawEdges(){
-        for(int i = 0; i < 12; i++){
-            /* print("edge" + i + " is --- "); */
+        for(int i = 0; i < 12; i++){            
             voxelEdges[i].draw();
         }
     }
