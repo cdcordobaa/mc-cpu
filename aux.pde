@@ -26,7 +26,7 @@ void drawGrid(){
 }
 
 void calculateIsoLevel(Voxel vox){
-  for (Vertex v: vox.voxelVertex){
+  for (Vertex v: vox.voxelVertices){
     v.isoValue = isoFunction(v.vertex);
   }  
 }

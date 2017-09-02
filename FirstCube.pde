@@ -8,6 +8,9 @@ float	axisMin = -10;
 float axisMax =  10;
 float axisRange = axisMax - axisMin;
 float scale = 5;
+
+IsoSurface volume = new IsoSurface();
+
 void setup(){
   size(1200, 600, P3D);
 
@@ -17,6 +20,7 @@ void setup(){
   cam.setMaximumDistance(500);
   //peasy 
 
+  volume.createVoxels();
 }
 
 void draw(){
@@ -24,27 +28,9 @@ void draw(){
   background(125);
   fill(0,255,0);
   stroke(255);
-
-  float x;
-  float y;
-  float z;
   
-  float delta = axisRange/(size-1);
-
-  for(int i=0; i< size; i++){
-    for(int j=0; j< size; j++){
-      for(int k=0; k< size; k++){
-        x = ((delta*i)+axisMin)*scale;
-        y = ((delta*j)+axisMin)*scale;
-        z = ((delta*k)+axisMin)*scale;
-
-        drawVoxel(x,y,z, delta*scale);
-
-        //println("delta "+ i + " is " + x);
-      }
-    }
-  }
-
+  //analogLines();
+  volume.renderSurface(0);
   
   pushMatrix();  
   
@@ -77,4 +63,27 @@ void drawVoxel(float i, float j, float k, float s){
   line(i,(j+s),(k+s), (i+s),(j+s),(k+s));
   line((i+s),j,(k+s), (i+s),(j+s),(k+s));
   
+}
+
+void analogLines(){
+float x;
+  float y;
+  float z;
+  
+  float delta = axisRange/(size-1);
+
+  for(int i=0; i< size; i++){
+    for(int j=0; j< size; j++){
+      for(int k=0; k< size; k++){
+        x = ((delta*i)+axisMin)*scale;
+        y = ((delta*j)+axisMin)*scale;
+        z = ((delta*k)+axisMin)*scale;
+
+        drawVoxel(x,y,z, delta*scale);
+
+        println("delta "+ k + " is " + x);
+      }
+    }
+  }
+
 }
