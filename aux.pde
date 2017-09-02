@@ -9,7 +9,7 @@ void voxel(float i, float j, float k, int s){
   calculateIsoLevel(vox);
   int cubeindex = vox.calculateCubeIndex(100);
   // println("cube: "+ cubeindex);
-  vox.renderCase(cubeindex);
+  //vox.renderCase(cubeindex);
 
 }
 

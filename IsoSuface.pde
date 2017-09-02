@@ -1,10 +1,10 @@
 class IsoSurface{
 
-    int size = 4;
+    int size = 20;
     float axisMin = -10;
     float axisMax =  10;
     float axisRange = axisMax - axisMin;
-    float scale = 1;
+    float scale = 20;
     // 3D array in 1D array
     Voxel[] voxelList;
 
@@ -20,7 +20,7 @@ class IsoSurface{
         float x;
         float y;
         float z;
-        float delta = axisRange/(size-1);
+        float delta = axisRange/(size);
         int index;
 
         for(int k=0; k< size; k++){
@@ -33,7 +33,7 @@ class IsoSurface{
                     index = i + (j*size) + (k*size*size);
                     voxelList[index] = new Voxel (new PVector(x, y, z), delta*scale); //<>//
                     calculateIsoValue(index); //<>//
-                    //println(index + " x y z " + " , " + x + " , "+ y + " , " + z );
+                    println(index + " x y z " + " , " + x + " , "+ y + " , " + z );
                 }
             }
         }
@@ -47,7 +47,7 @@ class IsoSurface{
     }
 
     float isoFunction(PVector vert){
-        return pow(vert.x, 2) + pow(vert.y, 2) + pow(vert.z, 2) - 25;
+        return pow(vert.x, 2) + pow(vert.y, 2) - pow(vert.z, 2) - 25*pow(scale,2);
     }
 
     void renderSurface(float isolevel){
@@ -55,8 +55,10 @@ class IsoSurface{
         for(Voxel vox: voxelList){
             
             cubeindex = vox.calculateCubeIndex(isolevel);  
-            vox.renderCase(cubeindex);
-            vox.drawEdges();
+            //println(cubeindex);
+            vox.renderCase(cubeindex,isolevel);
+            //vox.drawEdges();
+            //vox.drawVertex();
         }
     } 
 

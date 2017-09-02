@@ -53,12 +53,13 @@ class Voxel{
         }
     }
 
-    void renderCase(int cubeindex){
+    void renderCase(int cubeindex, float isolevel){
         for (int i=0;triTable[cubeindex][i]!=-1;i+=3) {
             beginShape(TRIANGLES);
                 for(int e = 0; e<3; e++){
                     int edge = triTable[cubeindex][i+e];
-                    PVector interSectPoint =  voxelEdges[edge].midPoint();
+                    //PVector interSectPoint =  voxelEdges[edge].midPoint();
+                    PVector interSectPoint = voxelEdges[edge].linearInterpolation(isolevel);
                     vertex(interSectPoint.x, interSectPoint.y, interSectPoint.z); 
                 }                   
             endShape();
@@ -80,7 +81,7 @@ class Voxel{
         return cubeindex;
     }
 
-    
+
 
 
 
