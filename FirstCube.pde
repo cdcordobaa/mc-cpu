@@ -3,11 +3,11 @@ PeasyCam cam;
 //peasy
 
 
-float size = 20;
+float size = 5;
 float	axisMin = -10;
 float axisMax =  10;
 float axisRange = axisMax - axisMin;
-float scale = 5;
+float scale = 1;
 
 IsoSurface volume = new IsoSurface();
 
@@ -30,7 +30,7 @@ void draw(){
   stroke(255);
   
   //analogLines();
-  volume.renderSurface(0);
+  volume.renderSurface(3);
   
   pushMatrix();  
   

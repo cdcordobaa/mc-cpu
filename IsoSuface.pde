@@ -1,16 +1,24 @@
 class IsoSurface{
 
-    int size = 20;
+    int size = 10;
     float axisMin = -10;
     float axisMax =  10;
     float axisRange = axisMax - axisMin;
-    float scale = 20;
+    float scale = 10;
+    float weight = 1000;
     // 3D array in 1D array
     Voxel[] voxelList;
+    PVector pointsCloud[];
 
     IsoSurface(){
 
         voxelList = new Voxel[size*size*size];
+        pointsCloud = new PVector[10];
+
+        for(int i=0; i<10; i++){
+            PVector pt = new PVector( random(10*scale), random(10*scale), random(10*scale) );
+            pointsCloud[i] = pt;
+        }
 
         
     }
@@ -29,11 +37,12 @@ class IsoSurface{
                     x = ((delta*i)+axisMin)*scale;
                     y = ((delta*j)+axisMin)*scale;
                     z = ((delta*k)+axisMin)*scale;
-                    //[x][y][z] position mapped to [index]  position //<>//
+                    //[x][y][z] position mapped to [index]  position 
                     index = i + (j*size) + (k*size*size);
-                    voxelList[index] = new Voxel (new PVector(x, y, z), delta*scale); //<>//
-                    calculateIsoValue(index); //<>//
-                    println(index + " x y z " + " , " + x + " , "+ y + " , " + z );
+                    voxelList[index] = new Voxel (new PVector(x, y, z), delta*scale); 
+                    //calculateIsoValue(index);
+                    calculateIsoValueFromCloud(index);
+                    //println(index + " x y z " + " , " + x + " , "+ y + " , " + z );
                 }
             }
         }
@@ -42,7 +51,7 @@ class IsoSurface{
 
     void calculateIsoValue(int index){
         for (Vertex v: voxelList[index].voxelVertices){
-            v.isoValue = isoFunction(v.vertex); //<>// //<>//
+            v.isoValue = isoFunction(v.vertex); 
         }  
     }
 
@@ -57,9 +66,16 @@ class IsoSurface{
             cubeindex = vox.calculateCubeIndex(isolevel);  
             //println(cubeindex);
             vox.renderCase(cubeindex,isolevel);
-            //vox.drawEdges();
+            vox.drawEdges();
             //vox.drawVertex();
         }
-    } 
+    }   
+
+    void calculateIsoValueFromCloud(int index){
+
+        for(int i=0; i<pointsCloud.length; i++){
+            voxelList[index].pointsCloudIsovalues(pointsCloud[i], weight);
+        }
+    }
 
 }

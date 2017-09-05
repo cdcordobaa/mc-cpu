@@ -21,11 +21,8 @@ class Edge{
     PVector linearInterpolation(float isolevel){
 
         //P = v0.vertex + (isovalue - V1) (v1.vertex - v0.vertex) / (V2 - V1) 
-        //float mu =  (isolevel - v0.isoValue) / (v1.isoValue - v0.isoValue) ;
-        //PVector intersec = PVector.mult(v1.vertex.sub(v0.vertex), mu);
-        //return PVector.add(v0.vertex ,intersec);
-        //return PVector.mult(v1.vertex.sub(v0.vertex) , (isolevel - v0.isoValue) / (v1.isoValue - v0.isoValue)).add(v0.vertex) ;
-        float mu;
+
+        float mu;        
         PVector p = new PVector();
 
         if (abs(isolevel-v0.isoValue) < 0.00001)
@@ -63,6 +60,11 @@ class Vertex{
 
     float getIsovalue(){
         return isoValue;
+    }
+
+    void setIsovalueFromPoint(PVector point, float weight){
+        float dist = max(1.0f, point.dist(vertex));
+        isoValue += (1.0f /  pow(dist,2))*weight;        
     }
 
 }
