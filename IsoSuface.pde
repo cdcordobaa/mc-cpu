@@ -1,11 +1,11 @@
 class IsoSurface{
 
-    int size = 10;
+    int size = 4;
     float axisMin = -10;
     float axisMax =  10;
     float axisRange = axisMax - axisMin;
     float scale = 10;
-    float weight = 1000;
+    float weight = 1;
     // 3D array in 1D array
     Voxel[] voxelList;
     PVector pointsCloud[];
@@ -13,14 +13,21 @@ class IsoSurface{
     IsoSurface(){
 
         voxelList = new Voxel[size*size*size];
-        pointsCloud = new PVector[10];
 
-        for(int i=0; i<10; i++){
-            PVector pt = new PVector( random(10*scale), random(10*scale), random(10*scale) );
+        int numPoints= 1;
+        pointsCloud = new PVector[numPoints];
+/* 
+        for(int i=0; i<numPoints; i++){
+            float xr=random(axisMin,axisMax);
+            float yr=random(axisMin,axisMax);
+            float zr=random(axisMin,axisMax);
+            
+            PVector pt = new PVector( xr, yr, zr );
             pointsCloud[i] = pt;
         }
+         */
+        pointsCloud[0] = new PVector(0 , 0 , 0);
 
-        
     }
 
     void createVoxels(){
@@ -40,8 +47,8 @@ class IsoSurface{
                     //[x][y][z] position mapped to [index]  position 
                     index = i + (j*size) + (k*size*size);
                     voxelList[index] = new Voxel (new PVector(x, y, z), delta*scale); 
-                    //calculateIsoValue(index);
-                    calculateIsoValueFromCloud(index);
+                    //FunctionIsoValue(index);
+                    pointsCloudIsovalues(index);
                     //println(index + " x y z " + " , " + x + " , "+ y + " , " + z );
                 }
             }
@@ -49,7 +56,7 @@ class IsoSurface{
     }
 
 
-    void calculateIsoValue(int index){
+    void FunctionIsoValue(int index){
         for (Vertex v: voxelList[index].voxelVertices){
             v.isoValue = isoFunction(v.vertex); 
         }  
@@ -59,23 +66,32 @@ class IsoSurface{
         return pow(vert.x, 2) + pow(vert.y, 2) - pow(vert.z, 2) - 25*pow(scale,2);
     }
 
+    void pointsCloudIsovalues(int index){
+        for(int i=0; i<pointsCloud.length; i++){
+            voxelList[index].pointsCloudIsovalues(pointsCloud[i], weight, scale);
+        }
+    }
+
     void renderSurface(float isolevel){
         int cubeindex;
         for(Voxel vox: voxelList){
             
-            cubeindex = vox.calculateCubeIndex(isolevel);  
-            //println(cubeindex);
+            cubeindex = vox.calculateCubeIndex(isolevel);            
             vox.renderCase(cubeindex,isolevel);
             vox.drawEdges();
             //vox.drawVertex();
+            drawPointsCloud();
         }
-    }   
+    }
 
-    void calculateIsoValueFromCloud(int index){
-
-        for(int i=0; i<pointsCloud.length; i++){
-            voxelList[index].pointsCloudIsovalues(pointsCloud[i], weight);
+    void drawPointsCloud(){
+        for(PVector pt: pointsCloud){
+            pushMatrix();
+            translate(pt.z, pt.y, pt.z);
+            sphere(1);
+            popMatrix();
         }
+            
     }
 
 }

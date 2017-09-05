@@ -81,11 +81,12 @@ class Voxel{
         return cubeindex;
     }
 
-     void  pointsCloudIsovalues(PVector point, float weight){
-         for (Vertex v: voxelVertices){
-            v.setIsovalueFromPoint(point, weight);
+     void  pointsCloudIsovalues(PVector point, float weight, float scale){
+        for (Vertex v: voxelVertices){
+
+            v.setIsovalueFromPoint(point, weight, scale);
             println("iso val vox: "+ v.isoValue);
-         }
+        }
     }
 
 
