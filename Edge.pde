@@ -64,7 +64,7 @@ class Vertex{
 
     void setIsovalueFromPoint(PVector point, float weight, float scale){
         float dist = max(1.0f, point.dist(vertex));
-        isoValue += (1.0f /  pow(dist,2))*weight*scale;        
+        isoValue += (1.0f /  pow(dist,2))*weight*scale*scale;        
     }
 
 }
