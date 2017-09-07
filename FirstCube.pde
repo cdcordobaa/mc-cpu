@@ -11,7 +11,8 @@
   <---
 */
   //  Press key 1 or 2 to change between function based surface
-  //  or a surface calculated from a random points cloud 
+  //  or a surface calculated from a random points cloud
+   
 // -------------
 
 import peasy.*;
@@ -50,11 +51,14 @@ void draw(){
   fill(0,255,0);
   stroke(255);
 
+  float isolevel = mouseX/10000.0;
+
   if(volumeType == 1)
     volumeFunc.renderSurface(0);
   if(volumeType == 2)
-    volumePcloud.renderSurface(0.09, true);
+    volumePcloud.renderSurface(isolevel, true);
   
+  println("mouseX: "+ isolevel);
 }
 
 PVector[] randomPoints(int numPoints, float min, float max){
