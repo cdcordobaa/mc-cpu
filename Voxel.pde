@@ -38,12 +38,9 @@ class Voxel{
         voxelVertices[7] = new Vertex(i  , j+s, k+s);
     }
 
-    void drawVertex(){
-        textSize(15);
+    void drawVertex(){        
         for(int i = 0; i < 8 ; i++){
-            text("v"+i, voxelVertices[i].vertex.x,
-                        voxelVertices[i].vertex.y,
-                        voxelVertices[i].vertex.z);
+            voxelVertices[i].draw(i);
         }
     }
     
@@ -83,11 +80,8 @@ class Voxel{
 
      void  pointsCloudIsovalues(PVector point, float weight, float scale){
         for (Vertex v: voxelVertices){
-
             v.setIsovalueFromPoint(point, weight, scale);
-            println("iso val vox: "+ v.isoValue);
+            //println("v.isoValue: "+v.isoValue);
         }
     }
-
-
 }

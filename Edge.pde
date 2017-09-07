@@ -67,4 +67,9 @@ class Vertex{
         isoValue += (1.0f /  pow(dist,2))*weight*scale*scale;        
     }
 
+    void draw(int i){
+        textSize(5);
+        text("v"+i, vertex.x, vertex.y, vertex.z);
+    }
+
 }

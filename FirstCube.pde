@@ -1,15 +1,26 @@
+// -------------
+/*
+  CRISTIAN DANIEL CORDOBA
+  Marching Cubes Algorithm CPU Implementation in Processing
+  
+  Reference CODE used can be found here 
+  ---> 
+  http://paulbourke.net/geometry/polygonise/
+  https://github.com/cloudlab/ComputationalGeometry-P5/blob/master/src/ComputationalGeometry/IsoSurface.java 
+  https://github.com/stemkoski/stemkoski.github.com/blob/master/Three.js/Marching-Cubes.html
+  <---
+*/
+  //  Press key 1 or 2 to change between function based surface
+  //  or a surface calculated from a random points cloud 
+// -------------
+
 import peasy.*;
 PeasyCam cam;
 //peasy
 
-
-float size = 0;
-float	axisMin = -10;
-float axisMax =  10;
-float axisRange = axisMax - axisMin;
-float scale = 10;
-
-IsoSurface volume = new IsoSurface();
+IsoSurface volumeFunc;
+IsoSurface volumePcloud;
+int volumeType = 1;
 
 void setup(){
   size(1200, 600, P3D);
@@ -20,70 +31,48 @@ void setup(){
   cam.setMaximumDistance(500);
   //peasy 
 
-  volume.createVoxels();
+  int resolution = 20;
+  float axisMin = -10; 
+  float axisMax = 10;
+  float sizeScale = 10;
+
+  volumeFunc = new IsoSurface(resolution,axisMin,axisMax,sizeScale);
+
+  PVector[] pCloud = randomPoints(10, axisMin, axisMax);
+
+  volumePcloud = new IsoSurface(resolution,axisMin*2,axisMax*2,sizeScale,pCloud,1);
+
 }
 
 void draw(){
 
-  background(125);
+  background(200);
   fill(0,255,0);
   stroke(255);
-  
-  //analogLines();
-  volume.renderSurface(0.09);
-  
-  pushMatrix();  
-  
-  //drawGrid();
-  
-  //voxel(delta,0,0,gridScale);
 
-  popMatrix();
-}
-
-void drawVoxel(float i, float j, float k, float s){
-
-
-  
-  
-  line(i,j,k, i,j,(k+s));
-  line(i,j,k, i,(j+s),k);
-  line(i,j,k, (i+s),j,k);
-  
-  line((i+s),j,k, (i+s),j,(k+s));
-  line((i+s),j,k, (i+s),(j+s),k);
-  
-  line(i,(j+s),k, i,(j+s),(k+s));
-  line(i,(j+s),k, (i+s),(j+s),k);
-  
-  line(i,j,(k+s), i,(j+s),(k+s));
-  line(i,j,(k+s), (i+s),j,(k+s));
-   
-  line((i+s),(j+s),k, (i+s),(j+s),(k+s));
-  line(i,(j+s),(k+s), (i+s),(j+s),(k+s));
-  line((i+s),j,(k+s), (i+s),(j+s),(k+s));
+  if(volumeType == 1)
+    volumeFunc.renderSurface(0);
+  if(volumeType == 2)
+    volumePcloud.renderSurface(0.09, true);
   
 }
 
-void analogLines(){
-float x;
-  float y;
-  float z;
-  
-  float delta = axisRange/(size-1);
+PVector[] randomPoints(int numPoints, float min, float max){
 
-  for(int i=0; i< size; i++){
-    for(int j=0; j< size; j++){
-      for(int k=0; k< size; k++){
-        x = ((delta*i)+axisMin)*scale;
-        y = ((delta*j)+axisMin)*scale;
-        z = ((delta*k)+axisMin)*scale;
-
-        drawVoxel(x,y,z, delta*scale);
-
-        println("delta "+ k + " is " + x);
-      }
-    }
-  }
-
+  PVector[] pointsCloud = new PVector[numPoints];
+  for(int i=0; i<numPoints; i++){
+      float xr=random(min,max);
+      float yr=random(min,max);
+      float zr=random(min,max);            
+      pointsCloud[i] = new PVector( xr, yr, zr );
+  }  
+  return pointsCloud;
 }
+
+void keyPressed() {
+  if (key == '1')
+    volumeType = 1;
+  if (key == '2')
+    volumeType = 2;
+}
+
